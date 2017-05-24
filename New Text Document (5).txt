@@ -1,0 +1,79 @@
+Set<String> emailDomains = new Set<String>();
+
+ 
+
+    for (Lead l : Trigger.New) {
+
+        if (l.Email == null) {
+
+            continue;
+
+       }  
+
+ 
+
+        emailDomains.add(l.Email.split('@').get(1));
+
+    }
+
+ 
+
+    emailDomains.remove(null);
+
+            
+
+    if (!emailDomains.isEmpty()) {
+
+        Map<String, Account> emailDomainToAccountMap = new Map<String, Account>();
+
+ 
+
+        for (Account a : [
+
+            select Email_Domain__c,
+
+               OwnerId
+
+            from Account
+
+            where A_A_C__c = '1- Strategic' and
+
+                Email_Domain__c in :emailDomains
+
+        ]) {
+
+            emailDomainToAccountMap.put(a.Email_Domain__c, a);
+
+        }  
+
+ 
+
+        for (Lead l : Trigger.New) {
+
+            if (l.Email == null) {
+
+                continue;
+
+            }
+
+ 
+
+            String domain = l.Email.split('@').get(1);
+
+ 
+
+            if (!emailDomainToAccountMap.containsKey(domain)) {
+
+                continue;
+
+            }
+
+ 
+
+            l.OwnerId = emailDomainToAccountMap.get(domain).OwnerId;
+
+        }
+
+    }
+
+}

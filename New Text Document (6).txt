@@ -1,0 +1,46 @@
+<!-- Pagination -->
+            <table style="width: 100%"><tr>
+                <td align="center">
+                    <!-- Previous page -->
+                    <!-- active -->
+                    <apex:commandLink action="{! Previous }" value="« Previous"
+                         rendered="{! HasPrevious }"/>
+                    <!-- inactive (no earlier pages) -->
+                    <apex:outputText style="color: #ccc;" value="« Previous"
+                         rendered="{! NOT(HasPrevious) }"/>
+                    
+                    &nbsp;&nbsp;  
+                    
+                    <!-- Next page -->
+                    <!-- active -->
+                    <apex:commandLink action="{! Next }" value="Next »"
+                         rendered="{! HasNext }"/>
+                    <!-- inactive (no more pages) -->
+                    <apex:outputText style="color: #ccc;" value="Next »"
+                         rendered="{! NOT(HasNext) }"/>
+                </td>
+            
+            </tr></table>
+
+
+=========================
+public void updatedCampaignsList(){
+        string selectedListView = 'LastModifiedDate';
+        string whereClauseString = 'WHERE ID IN :Campaigns';
+        filterListId = standardCampaignController.getFilterId();
+        Campaigns = standardCampaignController.getRecords();
+        if(mapListView.get('Recently Modified') == filterListId){
+            selectedListView = 'LastModifiedDate';
+        }else if(mapListView.get('All Campaigns') == filterListId){
+            selectedListView = 'StartDate';
+        }else if(mapListView.get('InActive Campaign') == filterListId){
+            selectedListView = 'StartDate';
+            whereClauseString = ' WHERE IsActive = false ';
+        }else if(mapListView.get('All Active Campaign') == filterListId){
+            selectedListView = 'StartDate';
+            whereClauseString = ' WHERE IsActive = true ';
+        }
+        string query = 'SELECT Name,Status,Type,StartDate,LastModifiedDate FROM Campaign'+whereClauseString+' ORDER BY '+selectedListView+' DESC';
+        Campaigns = Database.query(query);
+    }
+}

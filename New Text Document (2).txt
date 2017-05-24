@@ -1,0 +1,31 @@
+ConstructorDemo c1=new ConstructorDemo();
+c1.displayNumber();
+ConstructorDemo c2=new ConstructorDemo(20);
+c2.displayNumber();
+ConstructorDemo c3=new ConstructorDemo(20,30);
+c3.displayNumber();
+==================================
+StringReplace s=new StringReplace();
+String[] str=new String[]{'apple','arjun'};
+s.replaceCharInString(str,'p');
+==================================
+OverridingBase c=new OverridingChild();
+c.display();
+c=new OverridingBase();
+c.display();
+=====================================
+StaticDemo s=new StaticDemo();
+StaticDemo.staticDisplay();
+s.display(5);
+StaticDemo.staticDisplay();
+===============================
+AbstractDemo a=new AbstractDemoChild();
+a.display();
+a.multiply();
+===========================
+ AbstractDemoChild a=new AbstractDemoChild();
+a.display();
+a.displayChild();
+a.multiply();
+a.displayChild();
+
